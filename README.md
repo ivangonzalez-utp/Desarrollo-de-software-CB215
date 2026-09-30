@@ -2,7 +2,7 @@
 
 Plataforma web educativa para estudiar **Cálculo Integral** con teoría, visualizadores interactivos y ejemplos resueltos paso a paso. Es el proyecto semestral del curso Cálculo Integral del programa **Tecnología en Desarrollo de Software** de la **Universidad Tecnológica de Pereira (UTP)**, periodo **2026-II**. Se construye en tres fases y al final del semestre se compartirá en la red académica como material de estudio.
 
-**Demo en vivo:** <https://ivangonzalez-utp.github.io/Desarrollo-de-software-CB215/>
+**Demo en vivo:** <https://ivangonzalez-utp.github.io/Desarrollo-de-software-CB215/index.html>
 
 **Repositorio:** <https://github.com/ivangonzalez-utp/Desarrollo-de-software-CB215>
 
