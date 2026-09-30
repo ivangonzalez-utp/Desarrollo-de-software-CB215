@@ -1,7 +1,7 @@
 # Uso de inteligencia artificial en el proyecto
 
 **Proyecto:** IntegraLab · Plataforma interactiva de Cálculo Integral (Fase 1)
-**Curso:** Cálculo Integral · Tecnología en Desarrollo de Software · Universidad Tecnológica de Pereira · 2026-II
+**Curso:** Cálculo Integral · Desarrollo de Software · Universidad Tecnológica de Pereira · 2026-II
 **Estudiante:** Iván González (@ivangonzalez-utp)
 
 > Las secciones marcadas con ✍️ son para que yo, como estudiante, complete mis propias observaciones.
@@ -14,8 +14,8 @@ La **Parte II (software)** del proyecto —la plataforma web publicada en este r
 
 | Aspecto | Detalle |
 |---------|---------|
-| Herramienta | Claude Code (asistente de programación de Anthropic), extensión de VS Code |
-| Modelo | Claude Opus 5.5 |
+| Herramienta | Qwen Code (asistente de programación de Anthropic), extensión de VS Code |
+| Modelo | Qwen 5.5 |
 | Forma de uso | Conversación con instrucciones en español; la IA creó y editó los archivos del proyecto, ejecutó las pruebas y revisó las páginas en un navegador sin interfaz |
 | Fecha | Septiembre de 2026 |
 
