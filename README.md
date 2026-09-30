@@ -213,4 +213,4 @@ La parte de software de este proyecto se desarrolló con asistencia de IA. El de
 
 ## Autor
 
-Iván González ([@ivangonzalez-utp](https://github.com/ivangonzalez-utp)) · Tecnología en Desarrollo de Software · Universidad Tecnológica de Pereira · 2026-II.
+Iván González ([@ivangonzalez-utp](https://github.com/ivangonzalez-utp)) · Ingeniería Industrial· Universidad Tecnológica de Pereira · 2026-II.
