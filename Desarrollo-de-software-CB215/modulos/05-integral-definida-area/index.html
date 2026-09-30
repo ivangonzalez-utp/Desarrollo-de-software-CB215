@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 05 · Integral definida y área bajo la curva · IntegraLab</title>
+  <meta name="description" content="Teorema Fundamental del Cálculo, diferencia entre integral y área, área entre curvas con puntos de corte, visualizador con límites ajustables y ejemplos paso a paso.">
+  <script>try{var t=localStorage.getItem('ci-utp-tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-basic-dist-min@2.35.2/plotly-basic.min.js" integrity="sha384-wQ3lfCxuvLfhHGiSdHF5+e3NZ1zNwEMd8/nII+K7VKChF9llO/OwOcn/aVRkB7az" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js" integrity="sha384-d3+I7LvDambpjs3mxCGV0oIwCXzDxj2cyVHley/ulGoS2DijbpfjYixiUSl3nGuj" crossorigin="anonymous"></script>
+  <script defer src="../../assets/js/common.js"></script>
+  <script defer src="../../assets/js/numerics.js"></script>
+  <script defer src="../../assets/js/plot-helpers.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="5">
+  <noscript><p class="aviso-js">Esta plataforma necesita JavaScript para la navegación, las fórmulas y los visualizadores interactivos.</p></noscript>
+
+  <main id="contenido" class="contenedor">
+    <nav class="migas" aria-label="Ruta de navegación">
+      <ol>
+        <li><a href="../../index.html">Inicio</a></li>
+        <li><span aria-current="page">Módulo 5</span></li>
+      </ol>
+    </nav>
+
+    <header class="cabecera-lab">
+      <div>
+        <p class="cabecera-lab__num">Módulo <span>05</span></p>
+        <h1>Integral definida y área bajo la curva</h1>
+        <ul class="cabecera-lab__etiquetas" aria-label="Etiquetas del módulo">
+          <li><span class="distintivo distintivo--fase1">Fase 1 · Disponible</span></li>
+          <li><span class="etiqueta-tema">Integral definida</span></li>
+        </ul>
+        <p class="lead">
+          Los métodos numéricos aproximan; el Teorema Fundamental del Cálculo da el valor exacto cuando se conoce una
+          antiderivada. Aquí también se aclara una confusión frecuente: la integral no siempre es un área.
+        </p>
+      </div>
+      <aside class="pizarra" aria-label="Fórmula clave del módulo">
+        <p class="pizarra__titulo">En la pizarra</p>
+        $$\int_a^b f(x)\,dx=F(b)-F(a)\qquad\text{si } F'=f$$
+        <p class="pizarra__nota">Teorema Fundamental del Cálculo, segunda parte.</p>
+      </aside>
+    </header>
+
+    <div class="pestanas" data-pestanas>
+      <div class="pestanas__lista" role="tablist" aria-label="Secciones del módulo">
+        <button type="button" class="pestana" role="tab" id="pestana-teoria" aria-controls="teoria" aria-selected="true"><span class="pestana__num">1</span> Teoría</button>
+        <button type="button" class="pestana" role="tab" id="pestana-visualizador" aria-controls="visualizador" aria-selected="false" tabindex="-1"><span class="pestana__num">2</span> Visualizador<span class="pestana__largo">interactivo</span></button>
+        <button type="button" class="pestana" role="tab" id="pestana-ejemplos" aria-controls="ejemplos" aria-selected="false" tabindex="-1"><span class="pestana__num">3</span> Ejemplos<span class="pestana__largo">paso a paso</span></button>
+      </div>
+
+      <!-- ======================= 1 · TEORÍA ======================= -->
+      <section class="panel-pestana" id="teoria" role="tabpanel" aria-labelledby="pestana-teoria" tabindex="0">
+        <div class="teoria">
+          <h2 class="visualmente-oculto">Teoría</h2>
+
+          <h3><span class="num-sub">5.1</span> El Teorema Fundamental del Cálculo</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">¿Por qué «fundamental»?</span>
+            <p>Conecta las dos grandes ideas del cálculo: derivar e integrar son procesos inversos.</p>
+          </aside>
+          <p>
+            Sea $f$ continua en $[a,b]$. La <strong>función de área</strong> $A(x)$ mide la integral desde $a$ hasta un
+            extremo móvil $x$. La primera parte del teorema dice que su derivada es la propia $f$:
+          </p>
+          <div class="ecuacion"><span class="ecuacion__num">(5.1)</span>$$A(x)=\int_a^x f(t)\,dt\quad\Longrightarrow\quad A'(x)=f(x)$$</div>
+          <p>
+            La segunda parte es la herramienta de cálculo: si $F$ es <em>cualquier</em> antiderivada de $f$ (es decir,
+            $F'=f$), la integral definida se obtiene evaluando $F$ en los extremos:
+          </p>
+          <div class="ecuacion"><span class="ecuacion__num">(5.2)</span>$$\int_a^b f(x)\,dx=\Big[F(x)\Big]_a^b=F(b)-F(a)$$</div>
+
+          <h3><span class="num-sub">5.2</span> Propiedades que se usan a cada rato</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">La constante no importa</span>
+            <p>Con $F+C$ en lugar de $F$: $(F(b)+C)-(F(a)+C)=F(b)-F(a)$. Por eso en la integral definida no se escribe $+C$.</p>
+          </aside>
+          <div class="ecuacion"><span class="ecuacion__num">(5.3)</span>$$\int_a^a f(x)\,dx=0,\qquad \int_b^a f(x)\,dx=-\int_a^b f(x)\,dx$$</div>
+          <div class="ecuacion"><span class="ecuacion__num">(5.4)</span>$$\int_a^b\big[k\,f(x)\pm g(x)\big]dx=k\int_a^b f(x)\,dx\pm\int_a^b g(x)\,dx$$</div>
+          <div class="ecuacion"><span class="ecuacion__num">(5.5)</span>$$\int_a^c f(x)\,dx=\int_a^b f(x)\,dx+\int_b^c f(x)\,dx$$</div>
+
+          <h3><span class="num-sub">5.3</span> Integral no es lo mismo que área</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Receta para el área total</span>
+            <ol>
+              <li>Hallar las raíces de $f$ en $[a,b]$.</li>
+              <li>Integrar en cada tramo.</li>
+              <li>Sumar los valores absolutos.</li>
+            </ol>
+          </aside>
+          <p>
+            La integral suma <em>con signo</em>: las regiones sobre el eje cuentan positivo y las que están debajo, negativo.
+            El <strong>área total</strong> entre la curva y el eje, en cambio, siempre es positiva:
+          </p>
+          <div class="ecuacion"><span class="ecuacion__num">(5.6)</span>$$\text{Área total}=\int_a^b |f(x)|\,dx$$</div>
+          <div class="recuadro">
+            <p class="recuadro__titulo">Ejemplo rápido · el seno en un periodo</p>
+            <p>$\displaystyle\int_0^{2\pi}\sin x\,dx=\big[-\cos x\big]_0^{2\pi}=0$, porque el arco positivo y el negativo se cancelan. Pero el área encerrada es $\displaystyle\int_0^{2\pi}|\sin x|\,dx=2+2=4$.</p>
+          </div>
+
+          <h3><span class="num-sub">5.4</span> Área entre dos curvas</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Arriba menos abajo</span>
+            <p>Si en todo el tramo $f\ge g$, el valor absoluto sobra: el área es $\int (f-g)\,dx$.</p>
+          </aside>
+          <p>El área de la región limitada por $y=f(x)$, $y=g(x)$, $x=a$ y $x=b$ es</p>
+          <div class="ecuacion"><span class="ecuacion__num">(5.7)</span>$$A=\int_a^b |f(x)-g(x)|\,dx$$</div>
+          <div class="recuadro">
+            <p class="recuadro__titulo">Procedimiento 5.1</p>
+            <ol>
+              <li>Hallar los <strong>puntos de corte</strong> resolviendo $f(x)=g(x)$.</li>
+              <li>En cada tramo entre cortes, decidir qué curva está <strong>arriba</strong> (basta evaluar un punto).</li>
+              <li>Integrar «arriba menos abajo» en cada tramo y sumar los resultados.</li>
+            </ol>
+          </div>
+
+          <p class="siguiente-pestana"><a class="btn btn--secundario" href="#visualizador">Practicar en el visualizador →</a></p>
+        </div>
+      </section>
+
+      <!-- ================= 2 · VISUALIZADOR INTERACTIVO ================= -->
+      <section class="panel-pestana" id="visualizador" role="tabpanel" aria-labelledby="pestana-visualizador" tabindex="0">
+        <h2 class="visualmente-oculto">Visualizador interactivo</h2>
+        <p class="panel__intro">Arrastra los límites $a$ y $b$. En el modo «bajo la curva» las regiones sobre el eje se pintan en azul y las de abajo en rojo; en el modo «entre curvas» se calculan los puntos de corte automáticamente.</p>
+
+        <form class="lab" id="vis-area" novalidate aria-label="Visualizador de integral definida y área">
+          <div class="lab__opciones">
+            <p class="lab__opciones-titulo" id="modo-titulo">Modo</p>
+            <div class="segmentado" role="radiogroup" aria-labelledby="modo-titulo">
+              <label><input type="radio" name="modo" value="bajo" checked><span>Bajo la curva</span></label>
+              <label><input type="radio" name="modo" value="entre"><span>Entre dos curvas</span></label>
+            </div>
+          </div>
+
+          <div class="lab__barra lab__barra--curvas">
+            <div class="expresion">
+              <label class="expresion__prefijo" for="fx">$f(x)=$</label>
+              <input id="fx" type="text" class="entrada-mono" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="fx-ayuda">
+            </div>
+            <div class="expresion" data-solo-modo="entre" hidden>
+              <label class="expresion__prefijo" for="gx">$g(x)=$</label>
+              <input id="gx" type="text" class="entrada-mono" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="fx-ayuda">
+            </div>
+            <p class="lab__ayuda" id="fx-ayuda">Sintaxis de calculadora: <code>x^2</code>, <code>sqrt(x)</code>, <code>exp(x)</code>, <code>log(x)</code>, <code>sin(x)</code> o <code>sen(x)</code>. Los límites aceptan <code>pi/4</code> o <code>2*pi</code>.</p>
+          </div>
+
+          <div class="lab__chips">
+            <p class="lab__chips-titulo" id="chips-titulo">Probar con</p>
+            <div class="lab__chips-lista" id="chips-area" role="group" aria-labelledby="chips-titulo"></div>
+          </div>
+
+          <div class="lab__cuerpo">
+            <div class="mensaje" id="mensaje-area" role="status" aria-live="polite" hidden></div>
+            <div class="grafica" id="grafica-area" role="img" aria-label="Gráfica con el área sombreada entre los límites a y b"></div>
+          </div>
+
+          <div class="lab__n lab__n--ancho">
+            <label for="a-rango">$a=$</label>
+            <input id="a-rango" type="range" min="0" max="1" step="0.01" aria-label="Límite inferior a">
+            <input id="a-texto" type="text" class="entrada-mono" autocomplete="off" spellcheck="false" aria-label="Valor del límite inferior a">
+          </div>
+          <div class="lab__n lab__n--ancho">
+            <label for="b-rango">$b=$</label>
+            <input id="b-rango" type="range" min="0" max="1" step="0.01" aria-label="Límite superior b">
+            <input id="b-texto" type="text" class="entrada-mono" autocomplete="off" spellcheck="false" aria-label="Valor del límite superior b">
+            <p class="lab__n-ayuda">Arrastra los controles o escribe los límites (acepta <code>pi/2</code>). Si escribes un valor fuera de la ventana, la gráfica se amplía.</p>
+          </div>
+
+          <div class="lab__opciones">
+            <label class="casilla" data-solo-modo="bajo"><input type="checkbox" id="mostrar-area-acumulada"> <span>Mostrar la función de área $A(x)=\int_a^x f(t)\,dt$</span></label>
+            <button type="button" class="btn btn--secundario btn--pequeno" id="usar-cortes" data-solo-modo="entre" hidden>Usar los puntos de corte como límites</button>
+          </div>
+
+          <div class="lcd" id="lcd-area"></div>
+
+          <div class="lab__pie">
+            <p class="leyenda-texto" id="nota-tfc"></p>
+            <details class="desplegable">
+              <summary>Tabla de tramos (entre raíces o puntos de corte)</summary>
+              <div class="desplegable__cuerpo">
+                <div class="tabla-scroll" id="tabla-area"></div>
+              </div>
+            </details>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= 3 · EJEMPLOS PASO A PASO ================= -->
+      <section class="panel-pestana" id="ejemplos" role="tabpanel" aria-labelledby="pestana-ejemplos" tabindex="0">
+        <h2 class="visualmente-oculto">Ejemplos resueltos paso a paso</h2>
+        <p class="panel__intro">Intenta cada ejercicio en tu cuaderno y luego revela la solución paso a paso para comparar.</p>
+
+        <article class="hoja" aria-labelledby="ej1-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 1</span>
+            <h3 id="ej1-titulo">El valor exacto de $\int_0^3 x^2\,dx$ con el TFC</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Calcula $\displaystyle\int_0^3 x^2\,dx$ con el Teorema Fundamental del Cálculo y compáralo con las aproximaciones $L_3=5$ y $R_3=14$ del módulo 1.</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Buscar una antiderivada</span>
+                <p>Por la regla de la potencia, $F(x)=\dfrac{x^3}{3}$ cumple $F'(x)=x^2$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Evaluar en los extremos (5.2)</span>
+                $$\int_0^3 x^2\,dx=\left[\frac{x^3}{3}\right]_0^3=\frac{27}{3}-\frac{0}{3}=9$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Interpretar</span>
+                <p>Como $x^2\ge0$ en $[0,3]$, la integral coincide con el área bajo la parábola.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Comparar</span>
+                <p><span class="resultado-final">El valor exacto es $9$</span>: $L_3=5$ se queda corta y $R_3=14$ se pasa, tal como predice la propiedad de las funciones crecientes.</p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-area='{"modo":"bajo","f":"x^2","a":"0","b":"3"}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej2-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 2</span>
+            <h3 id="ej2-titulo">Integral contra área: $f(x)=x^2-1$ en $[0,2]$</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Calcula $\displaystyle\int_0^2 (x^2-1)\,dx$ y el área total entre la curva y el eje $x$ en el mismo intervalo. ¿Por qué son distintas?</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">La integral con el TFC</span>
+                $$\int_0^2 (x^2-1)\,dx=\left[\frac{x^3}{3}-x\right]_0^2=\frac83-2=\frac23$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Raíces en el intervalo</span>
+                <p>$x^2-1=0\iff x=\pm1$. Solo $x=1$ está en $[0,2]$: en $[0,1]$ la función es negativa y en $[1,2]$ es positiva.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Integrar por tramos</span>
+                $$\int_0^1 (x^2-1)\,dx=\frac13-1=-\frac23,\qquad \int_1^2 (x^2-1)\,dx=\frac23-\left(-\frac23\right)=\frac43$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Área total (5.6)</span>
+                $$\int_0^2 |x^2-1|\,dx=\left|-\frac23\right|+\frac43=2$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Conclusión</span>
+                <p><span class="resultado-final">Integral $=\tfrac23$, área $=2$.</span> La integral resta la región que está bajo el eje; el área la suma.</p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-area='{"modo":"bajo","f":"x^2 - 1","a":"0","b":"2"}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej3-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 3</span>
+            <h3 id="ej3-titulo">Área entre $y=x$ y $y=x^2$</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Calcula el área de la región encerrada por las curvas $y=x$ y $y=x^2$.</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Puntos de corte</span>
+                <p>$x=x^2\iff x^2-x=0\iff x(x-1)=0$, así que las curvas se cortan en $x=0$ y $x=1$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">¿Cuál está arriba?</span>
+                <p>En $x=\tfrac12$: $\tfrac12&gt;\tfrac14$. Entonces $y=x$ está arriba en todo $[0,1]$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Plantear «arriba menos abajo»</span>
+                $$A=\int_0^1 \big(x-x^2\big)\,dx$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Integrar y evaluar</span>
+                $$A=\left[\frac{x^2}{2}-\frac{x^3}{3}\right]_0^1=\frac12-\frac13=\frac16$$
+                <p><span class="resultado-final">El área encerrada es $\tfrac16\approx0.166667$.</span></p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-area='{"modo":"entre","f":"x","g":"x^2","a":"0","b":"1"}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej4-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 4</span>
+            <h3 id="ej4-titulo">Región entre una parábola y una recta</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Calcula el área de la región limitada por $y=4-x^2$ y $y=x+2$.</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Puntos de corte</span>
+                <p>$4-x^2=x+2\iff x^2+x-2=0\iff(x+2)(x-1)=0$, así que $x=-2$ y $x=1$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">¿Cuál está arriba?</span>
+                <p>En $x=0$: $4&gt;2$, así que la parábola está arriba en $[-2,1]$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Plantear la integral</span>
+                $$A=\int_{-2}^{1}\Big[(4-x^2)-(x+2)\Big]dx=\int_{-2}^{1}\big(2-x-x^2\big)\,dx$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Antiderivada y evaluación</span>
+                $$\left[2x-\frac{x^2}{2}-\frac{x^3}{3}\right]_{-2}^{1}=\left(2-\frac12-\frac13\right)-\left(-4-2+\frac83\right)=\frac76+\frac{10}{3}$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Resultado</span>
+                <p><span class="resultado-final">$A=\dfrac{7}{6}+\dfrac{20}{6}=\dfrac{27}{6}=\dfrac92=4.5$</span></p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-area='{"modo":"entre","f":"4 - x^2","g":"x + 2","a":"-2","b":"1"}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+      </section>
+    </div>
+
+    <nav class="prev-next" data-prev-next aria-label="Navegación entre módulos"></nav>
+  </main>
+</body>
+</html>

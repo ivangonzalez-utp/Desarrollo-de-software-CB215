@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 11 · Integrales con trigonométricas inversas · IntegraLab</title>
+  <meta name="description" content="Módulo 11 de IntegraLab, plataforma de Cálculo Integral (UTP 2026-II): Integrales con trigonométricas inversas. Disponible en la Fase 3.">
+  <script>try{var t=localStorage.getItem('ci-utp-tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+  <script defer src="../../assets/js/common.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="11">
+  <noscript><p class="aviso-js">Esta plataforma necesita JavaScript para la navegación y las fórmulas.</p></noscript>
+
+  <main id="contenido" class="contenedor">
+    <nav class="migas" aria-label="Ruta de navegación">
+      <ol>
+        <li><a href="../../index.html">Inicio</a></li>
+        <li><span aria-current="page">Módulo 11</span></li>
+      </ol>
+    </nav>
+
+    <header class="cabecera-lab">
+      <div>
+        <p class="cabecera-lab__num">Módulo <span>11</span></p>
+        <h1>Integrales con trigonométricas inversas</h1>
+        <ul class="cabecera-lab__etiquetas" aria-label="Etiquetas del módulo">
+          <li><span class="distintivo distintivo--fase3">Fase 3</span></li>
+          <li><span class="etiqueta-tema">Métodos de integración</span></li>
+        </ul>
+        <p class="lead">Algunas expresiones con raíces cuadradas o sumas de cuadrados se integran en términos de funciones trigonométricas inversas: arcoseno, arcotangente y arcosecante.</p>
+      </div>
+      <aside class="pizarra" aria-label="Fórmula clave del módulo">
+        <p class="pizarra__titulo">Fórmulas clave</p>
+        $$\int \frac{du}{\sqrt{a^2-u^2}}=\arcsin\frac{u}{a}+C$$
+        $$\int \frac{du}{a^2+u^2}=\frac{1}{a}\arctan\frac{u}{a}+C$$
+        $$\int \frac{du}{u\sqrt{u^2-a^2}}=\frac{1}{a}\operatorname{arcsec}\frac{|u|}{a}+C$$
+      </aside>
+    </header>
+
+    <section class="proximamente papel" aria-labelledby="mensaje-proximamente">
+      <p class="sello" id="mensaje-proximamente">Próximamente - Fase 3</p>
+      <p>Este módulo se desarrollará en la Fase 3 del proyecto e incluirá teoría, un visualizador interactivo y ejemplos resueltos paso a paso, igual que los módulos de la Fase 1.</p>
+      <div class="grupo-botones">
+        <a class="btn btn--secundario" href="../06-integracion-directa/index.html">Repasar integración directa</a>
+        <a class="btn btn--texto" href="../../index.html#modulos">Ver todos los módulos</a>
+      </div>
+    </section>
+
+    <section class="tarjeta" aria-labelledby="titulo-temas">
+      <h2 id="titulo-temas">¿Qué se estudiará en este módulo?</h2>
+      <ul>
+        <li>Reconocer las formas $a^2-u^2$, $a^2+u^2$ y $u^2-a^2$ en el integrando.</li>
+        <li>Integrales que producen $\arcsin$ y $\arctan$.</li>
+        <li>Integrales que producen $\operatorname{arcsec}$.</li>
+        <li>Combinación con sustitución y con el trinomio cuadrático.</li>
+      </ul>
+    </section>
+
+    <nav class="prev-next" data-prev-next aria-label="Navegación entre módulos"></nav>
+  </main>
+</body>
+</html>
