@@ -100,7 +100,7 @@ La **Parte II (software)** del proyecto —la plataforma web publicada en este r
 ```markdown
 ## Contexto
 
-Soy estudiante de Tecnología en Desarrollo de Software en la Universidad Tecnológica de Pereira (UTP), curso Cálculo Integral, periodo 2026-II. Necesito construir la **Fase 1** de una plataforma web educativa e interactiva de cálculo integral. Es un proyecto semestral por fases; al final del semestre se compartirá en la red académica como material de estudio. Toda la interfaz y el contenido deben estar en **español**.
+Soy estudiante de Desarrollo de Software en la Universidad Tecnológica de Pereira (UTP), curso Cálculo Integral, periodo 2026-II. Necesito construir la **Fase 1** de una plataforma web educativa e interactiva de cálculo integral. Es un proyecto semestral por fases; al final del semestre se compartirá en la red académica como material de estudio. Toda la interfaz y el contenido deben estar en **español**.
 
 - **Usuario de GitHub:** `ivangonzalez-utp`
 - **Repositorio:** `calculo-integral-utp` (público)
@@ -181,7 +181,7 @@ Controles comunes de los visualizadores: campo para la función $f(x)$ (con func
 
 ## USO_DE_IA.md
 
-Crea este archivo documentando que la Parte II (software) se desarrolló con asistencia de IA (Claude Code), qué partes generó la IA, qué revisé y ajusté yo, y qué prompts principales se usaron. Déjalo con secciones claras para que yo complete mis propias observaciones.
+Crea este archivo documentando que la Parte II (software) se desarrolló con asistencia de IA (Qwen Code), qué partes generó la IA, qué revisé y ajusté yo, y qué prompts principales se usaron. Déjalo con secciones claras para que yo complete mis propias observaciones.
 
 ## Git y despliegue
 
