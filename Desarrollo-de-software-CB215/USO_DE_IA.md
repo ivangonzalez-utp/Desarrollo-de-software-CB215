@@ -14,7 +14,7 @@ La **Parte II (software)** del proyecto —la plataforma web publicada en este r
 
 | Aspecto | Detalle |
 |---------|---------|
-| Herramienta | Qwen Code (asistente de programación de Anthropic), extensión de VS Code |
+| Herramienta | Qwen Code (asistente de programación de Alibaba), extensión de VS Code |
 | Modelo | Qwen 5.5 |
 | Forma de uso | Conversación con instrucciones en español; la IA creó y editó los archivos del proyecto, ejecutó las pruebas y revisó las páginas en un navegador sin interfaz |
 | Fecha | Septiembre de 2026 |
