@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 10 · Integrales trigonométricas · IntegraLab</title>
+  <meta name="description" content="Integrales trigonométricas: potencias y productos de seno y coseno, ángulo doble, productos a sumas, potencias de tangente y secante, con un verificador de identidades y de antiderivadas.">
+  <script>try{var t=localStorage.getItem('ci-utp-tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-basic-dist-min@2.35.2/plotly-basic.min.js" integrity="sha384-wQ3lfCxuvLfhHGiSdHF5+e3NZ1zNwEMd8/nII+K7VKChF9llO/OwOcn/aVRkB7az" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js" integrity="sha384-d3+I7LvDambpjs3mxCGV0oIwCXzDxj2cyVHley/ulGoS2DijbpfjYixiUSl3nGuj" crossorigin="anonymous"></script>
+  <script defer src="../../assets/js/common.js"></script>
+  <script defer src="../../assets/js/numerics.js"></script>
+  <script defer src="../../assets/js/plot-helpers.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="10">
+  <noscript><p class="aviso-js">Esta plataforma necesita JavaScript para la navegación, las fórmulas y los visualizadores interactivos.</p></noscript>
+
+  <main id="contenido" class="contenedor">
+    <nav class="migas" aria-label="Ruta de navegación">
+      <ol>
+        <li><a href="../../index.html">Inicio</a></li>
+        <li><span aria-current="page">Módulo 10</span></li>
+      </ol>
+    </nav>
+
+    <header class="cabecera-lab">
+      <div>
+        <p class="cabecera-lab__num">Módulo <span>10</span></p>
+        <h1>Integrales trigonométricas</h1>
+        <ul class="cabecera-lab__etiquetas" aria-label="Etiquetas del módulo">
+          <li><span class="distintivo distintivo--fase2">Fase 2 · Disponible</span></li>
+          <li><span class="etiqueta-tema">Métodos de integración</span></li>
+        </ul>
+        <p class="lead">
+          Casi todas las integrales trigonométricas se resuelven reescribiendo el integrando con identidades: potencias de seno y coseno,
+          ángulo doble, productos que se vuelven sumas y potencias de tangente y secante. El visualizador comprueba tus identidades y tus antiderivadas.
+        </p>
+      </div>
+      <aside class="pizarra" aria-label="Fórmulas clave del módulo">
+        <p class="pizarra__titulo">En la pizarra</p>
+        $$\int \sin u\,du=-\cos u+C,\qquad \int \cos u\,du=\sin u+C$$
+        $$\int \sec^2 u\,du=\tan u+C$$
+        $$\sin^2x=\frac{1-\cos2x}{2},\qquad \cos^2x=\frac{1+\cos2x}{2}$$
+      </aside>
+    </header>
+
+    <div class="pestanas" data-pestanas>
+      <div class="pestanas__lista" role="tablist" aria-label="Secciones del módulo">
+        <button type="button" class="pestana" role="tab" id="pestana-teoria" aria-controls="teoria" aria-selected="true"><span class="pestana__num">1</span> Teoría</button>
+        <button type="button" class="pestana" role="tab" id="pestana-visualizador" aria-controls="visualizador" aria-selected="false" tabindex="-1"><span class="pestana__num">2</span> Visualizador<span class="pestana__largo">interactivo</span></button>
+        <button type="button" class="pestana" role="tab" id="pestana-ejemplos" aria-controls="ejemplos" aria-selected="false" tabindex="-1"><span class="pestana__num">3</span> Ejemplos<span class="pestana__largo">paso a paso</span></button>
+      </div>
+
+      <!-- ======================= 1 · TEORÍA ======================= -->
+      <section class="panel-pestana" id="teoria" role="tabpanel" aria-labelledby="pestana-teoria" tabindex="0">
+        <div class="teoria">
+          <h2 class="visualmente-oculto">Teoría</h2>
+
+          <h3><span class="num-sub">10.1</span> Fórmulas inmediatas</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Argumento lineal</span>
+            <p>Si el argumento es $ax+b$, se divide entre $a$: $\int\cos(3x)\,dx=\frac13\sin(3x)+C$. Es la sustitución $u=ax+b$ del <a href="../07-sustitucion-potencias/index.html">módulo 7</a>.</p>
+          </aside>
+          <p>Cada derivada trigonométrica leída al revés da una fórmula de integración. Las dos primeras son las más usadas:</p>
+          <div class="ecuacion"><span class="ecuacion__num">(10.1)</span>$$\int\sin u\,du=-\cos u+C$$</div>
+          <div class="ecuacion"><span class="ecuacion__num">(10.2)</span>$$\int\cos u\,du=\sin u+C$$</div>
+          <div class="tabla-scroll">
+            <table class="tabla-formulas">
+              <caption>Tabla básica de integrales trigonométricas (se comprueban derivando).</caption>
+              <thead><tr><th scope="col">Integral</th><th scope="col">Resultado</th><th scope="col">Comprobación</th></tr></thead>
+              <tbody>
+                <tr><td>$\displaystyle\int\sec^2u\,du$</td><td>$\tan u+C$</td><td>$(\tan u)'=\sec^2u$</td></tr>
+                <tr><td>$\displaystyle\int\csc^2u\,du$</td><td>$-\cot u+C$</td><td>$(\cot u)'=-\csc^2u$</td></tr>
+                <tr><td>$\displaystyle\int\sec u\tan u\,du$</td><td>$\sec u+C$</td><td>$(\sec u)'=\sec u\tan u$</td></tr>
+                <tr><td>$\displaystyle\int\csc u\cot u\,du$</td><td>$-\csc u+C$</td><td>$(\csc u)'=-\csc u\cot u$</td></tr>
+                <tr><td>$\displaystyle\int\tan u\,du,\ \int\cot u\,du$</td><td>$-\ln|\cos u|+C,\ \ln|\sin u|+C$</td><td>módulo <a href="../09-logaritmicas/index.html">9</a></td></tr>
+                <tr><td>$\displaystyle\int\sec u\,du,\ \int\csc u\,du$</td><td>$\ln|\sec u+\tan u|+C,\ -\ln|\csc u+\cot u|+C$</td><td>módulo <a href="../09-logaritmicas/index.html">9</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3><span class="num-sub">10.2</span> Identidades que se usan para reescribir</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Idea central</span>
+            <p>No se integra la expresión original: se reescribe con una identidad hasta que aparezca algo que ya se sabe integrar.</p>
+          </aside>
+          <div class="ecuacion"><span class="ecuacion__num">(10.3)</span>$$\sin^2x+\cos^2x=1,\qquad 1+\tan^2x=\sec^2x,\qquad 1+\cot^2x=\csc^2x$$</div>
+          <div class="ecuacion"><span class="ecuacion__num">(10.4)</span>$$\sin2x=2\sin x\cos x,\qquad \cos2x=\cos^2x-\sin^2x=2\cos^2x-1=1-2\sin^2x$$</div>
+          <p>De las dos últimas formas de $\cos2x$ se despejan las <strong>fórmulas de reducción de potencias</strong>, que bajan el exponente a cambio de duplicar el ángulo:</p>
+          <div class="ecuacion"><span class="ecuacion__num">(10.5)</span>$$\sin^2x=\frac{1-\cos2x}{2},\qquad \cos^2x=\frac{1+\cos2x}{2}$$</div>
+
+          <h3><span class="num-sub">10.3</span> Potencias de seno y coseno</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Por qué funciona</span>
+            <p>Cuando una potencia es impar, sobra un factor $\cos x\,dx$ o $\sin x\,dx$ que es justo el diferencial de la otra función. Con exponentes pares eso no ocurre y hay que reducir potencias.</p>
+          </aside>
+          <p>Para $\displaystyle\int\sin^mx\cos^nx\,dx$ hay tres casos:</p>
+          <div class="tabla-scroll">
+            <table class="tabla-formulas">
+              <caption>Estrategia para $\int\sin^mx\cos^nx\,dx$.</caption>
+              <thead><tr><th scope="col">Caso</th><th scope="col">Qué hacer</th><th scope="col">Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>$n$ impar</td><td>Separar un $\cos x$, convertir el resto con $\cos^2=1-\sin^2$ y usar $u=\sin x$</td><td>$\int\sin^2x\cos^3x\,dx$</td></tr>
+                <tr><td>$m$ impar</td><td>Separar un $\sin x$, convertir con $\sin^2=1-\cos^2$ y usar $u=\cos x$</td><td>$\int\sin^3x\,dx$</td></tr>
+                <tr><td>$m$ y $n$ pares</td><td>Reducir potencias con (10.5) y/o el ángulo doble (10.4)</td><td>$\int\cos^4x\,dx$</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Por ejemplo, con $u=\cos x$, $du=-\sin x\,dx$:</p>
+          <div class="ecuacion"><span class="ecuacion__num">(10.6)</span>$$\int\sin^3x\,dx=\int(1-\cos^2x)\sin x\,dx=-\int(1-u^2)\,du=-\cos x+\frac{\cos^3x}{3}+C$$</div>
+          <p>Y para exponentes pares, $\sin^2x\cos^2x=\left(\frac{\sin2x}{2}\right)^2=\frac{1-\cos4x}{8}$, con lo que $\int\sin^2x\cos^2x\,dx=\frac x8-\frac{\sin4x}{32}+C$.</p>
+
+          <h3><span class="num-sub">10.4</span> Productos que se convierten en sumas</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Cómo se obtienen</span>
+            <p>Salen de sumar y restar las fórmulas de $\sin(A\pm B)$ y $\cos(A\pm B)$. Son útiles cuando los ángulos son distintos, como $3x$ y $5x$.</p>
+          </aside>
+          <div class="ecuacion"><span class="ecuacion__num">(10.7)</span>$$\sin A\cos B=\tfrac12\big[\sin(A+B)+\sin(A-B)\big]$$</div>
+          <div class="ecuacion"><span class="ecuacion__num">(10.8)</span>$$\sin A\sin B=\tfrac12\big[\cos(A-B)-\cos(A+B)\big]$$</div>
+          <div class="ecuacion"><span class="ecuacion__num">(10.9)</span>$$\cos A\cos B=\tfrac12\big[\cos(A-B)+\cos(A+B)\big]$$</div>
+          <p>Después de la conversión, cada sumando es una integral inmediata de (10.1) y (10.2) con argumento lineal.</p>
+
+          <h3><span class="num-sub">10.5</span> Potencias de tangente y secante</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Derivadas útiles</span>
+            <p>$(\tan x)'=\sec^2x$ y $(\sec x)'=\sec x\tan x$. Buscamos que uno de esos factores quede disponible como $du$.</p>
+          </aside>
+          <p>Para $\displaystyle\int\tan^mx\sec^nx\,dx$:</p>
+          <div class="tabla-scroll">
+            <table class="tabla-formulas">
+              <caption>Estrategia para $\int\tan^mx\sec^nx\,dx$.</caption>
+              <thead><tr><th scope="col">Caso</th><th scope="col">Qué hacer</th><th scope="col">Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>$n$ par ($n\ge2$)</td><td>Separar $\sec^2x$, escribir el resto con $\sec^2=1+\tan^2$ y usar $u=\tan x$</td><td>$\int\sec^4x\,dx$</td></tr>
+                <tr><td>$m$ impar y $n\ge1$</td><td>Separar $\sec x\tan x$, escribir el resto con $\tan^2=\sec^2-1$ y usar $u=\sec x$</td><td>$\int\tan x\sec^3x\,dx$</td></tr>
+                <tr><td>Solo $\tan^m$ ($n=0$)</td><td>Separar $\tan^2x=\sec^2x-1$ y repetir, o usar (10.10)</td><td>$\int\tan^3x\,dx$</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Para potencias de tangente sola existe una fórmula de reducción que se obtiene separando $\tan^{n-2}x\,(\sec^2x-1)$:</p>
+          <div class="ecuacion"><span class="ecuacion__num">(10.10)</span>$$\int\tan^nx\,dx=\frac{\tan^{n-1}x}{n-1}-\int\tan^{n-2}x\,dx\qquad(n\ge2)$$</div>
+          <p>Con $n=3$: $\int\tan^3x\,dx=\frac{\tan^2x}{2}-\int\tan x\,dx=\frac{\tan^2x}{2}+\ln|\cos x|+C$.</p>
+
+          <h3><span class="num-sub">10.6</span> Verificar identidades y antiderivadas</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Ojo</span>
+            <p>Una comprobación numérica o gráfica <em>no es una demostración</em>: solo muestra que no hay contraejemplo en los puntos probados.</p>
+          </aside>
+          <p>
+            Dos antiderivadas distintas de la misma función pueden <em>verse</em> muy diferentes: $\int\sin x\cos x\,dx$ puede escribirse como
+            $\frac{\sin^2x}{2}$, como $-\frac{\cos^2x}{2}$ o como $-\frac{\cos2x}{4}$, y las tres difieren solo en una constante. Para decidir si un resultado es correcto basta derivarlo y comparar con el integrando.
+          </p>
+          <p>
+            Para decidir si una identidad que usaste es válida, se comparan los dos lados en muchos puntos y se grafica su diferencia: si es cero en todas partes, la identidad es plausible; si no, un solo punto con diferencia no nula la refuta. El visualizador hace ambas cosas.
+          </p>
+
+          <h3><span class="num-sub">10.7</span> Estrategia general y errores frecuentes</h3>
+          <div class="recuadro">
+            <p class="recuadro__titulo">Estrategia 10.1</p>
+            <ol>
+              <li><strong>¿Es inmediata?</strong> Compara con la tabla de 10.1 (recuerda dividir entre $a$ si el argumento es $ax+b$).</li>
+              <li><strong>Mira los exponentes</strong> de seno/coseno o de tangente/secante y escoge el caso de las tablas de 10.3 y 10.5.</li>
+              <li><strong>Ángulos distintos</strong> ($\sin3x\cos5x$): productos a sumas (10.4).</li>
+              <li><strong>Exponentes pares</strong>: reducir potencias (10.5), a veces dos veces.</li>
+              <li><strong>Verificar</strong> derivando el resultado en el visualizador.</li>
+            </ol>
+          </div>
+          <div class="recuadro">
+            <p class="recuadro__titulo">Errores frecuentes</p>
+            <ul>
+              <li><strong>Confundir $\sin^2x$ con $\sin(x^2)$ o con $2\sin x$.</strong> $\sin^2x=(\sin x)^2$.</li>
+              <li><strong>Integrar la potencia como si fuera $x^n$:</strong> $\int\sin^2x\,dx\neq\frac{\sin^3x}{3}$; falta la derivada $\cos x$ dentro de la integral.</li>
+              <li><strong>Olvidar el signo:</strong> $\int\sin x\,dx=-\cos x+C$ y $\int\csc^2x\,dx=-\cot x+C$.</li>
+              <li><strong>Olvidar dividir entre $a$</strong> en $\int\sin(ax)\,dx=-\frac1a\cos(ax)+C$.</li>
+              <li><strong>Usar mal el ángulo doble:</strong> $\sin2x\neq2\sin x$ y $\cos2x\neq\cos^2x$. Pruébalo en el verificador de identidades.</li>
+              <li><strong>Creer que respuestas distintas son incompatibles:</strong> pueden diferir por una constante.</li>
+            </ul>
+          </div>
+
+          <p class="siguiente-pestana"><a class="btn btn--secundario" href="#visualizador">Practicar en el visualizador →</a></p>
+        </div>
+      </section>
+
+      <!-- ================= 2 · VISUALIZADOR INTERACTIVO ================= -->
+      <section class="panel-pestana" id="visualizador" role="tabpanel" aria-labelledby="pestana-visualizador" tabindex="0">
+        <h2 class="visualmente-oculto">Visualizador interactivo</h2>
+        <p class="panel__intro">Dos herramientas. El <strong>verificador de identidades</strong> compara dos expresiones en muchos puntos y grafica su diferencia. El <strong>verificador de antiderivadas</strong> deriva tu $F$ con math.js y la compara con el integrando $f$.</p>
+
+        <div class="lab__opciones">
+          <p class="lab__opciones-titulo" id="modo-titulo">Herramienta</p>
+          <div class="segmentado" role="radiogroup" aria-labelledby="modo-titulo">
+            <label><input type="radio" name="modo-trig" value="identidad" checked><span>Identidades</span></label>
+            <label><input type="radio" name="modo-trig" value="antiderivada"><span>Antiderivadas</span></label>
+          </div>
+        </div>
+
+        <!-- ---- Verificador de identidades ---- -->
+        <form class="lab" id="vis-identidad" novalidate aria-label="Verificador de identidades">
+          <div class="lab__barra lab__barra--curvas">
+            <div class="expresion">
+              <label class="expresion__prefijo" for="id-u">$u(x)=$</label>
+              <input id="id-u" type="text" class="entrada-mono" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="ayuda-identidad">
+            </div>
+            <div class="expresion">
+              <label class="expresion__prefijo" for="id-v">$v(x)=$</label>
+              <input id="id-v" type="text" class="entrada-mono" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="ayuda-identidad">
+            </div>
+            <div class="lab__limites">
+              <div class="expresion">
+                <label class="expresion__prefijo" for="id-xmin">$x_{\min}=$</label>
+                <input id="id-xmin" type="text" inputmode="decimal" class="entrada-mono" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="expresion">
+                <label class="expresion__prefijo" for="id-xmax">$x_{\max}=$</label>
+                <input id="id-xmax" type="text" inputmode="decimal" class="entrada-mono" autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+            <p class="lab__ayuda" id="ayuda-identidad">Escribe $\sin^2x$ como <code>sin(x)^2</code>, $\sec x$ como <code>sec(x)</code> y el ángulo doble como <code>sin(2*x)</code>. La ventana admite valores como <code>-2*pi</code>.</p>
+          </div>
+
+          <div class="lab__chips">
+            <p class="lab__chips-titulo" id="chips-id-titulo">Probar con</p>
+            <div class="lab__chips-lista" id="chips-identidad" role="group" aria-labelledby="chips-id-titulo"></div>
+          </div>
+
+          <div class="lab__cuerpo">
+            <div class="mensaje" id="mensaje-identidad" role="status" aria-live="polite" hidden></div>
+            <div class="grafica" id="grafica-identidad" role="img" aria-label="Gráfica de u(x) y v(x) y, debajo, de la diferencia u(x) − v(x)"></div>
+          </div>
+
+          <div class="lcd" id="lcd-identidad"></div>
+        </form>
+
+        <!-- ---- Verificador de antiderivadas ---- -->
+        <form class="lab" id="vis-anti" novalidate aria-label="Verificador de antiderivadas trigonométricas" hidden>
+          <div class="lab__barra lab__barra--curvas">
+            <div class="expresion">
+              <label class="expresion__prefijo" for="an-f">$f(x)=$</label>
+              <input id="an-f" type="text" class="entrada-mono" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="ayuda-anti">
+            </div>
+            <div class="expresion">
+              <label class="expresion__prefijo" for="an-F">$F(x)=$</label>
+              <input id="an-F" type="text" class="entrada-mono" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="ayuda-anti">
+            </div>
+            <div class="lab__limites">
+              <div class="expresion">
+                <label class="expresion__prefijo" for="an-xmin">$x_{\min}=$</label>
+                <input id="an-xmin" type="text" inputmode="decimal" class="entrada-mono" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="expresion">
+                <label class="expresion__prefijo" for="an-xmax">$x_{\max}=$</label>
+                <input id="an-xmax" type="text" inputmode="decimal" class="entrada-mono" autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+            <p class="lab__ayuda" id="ayuda-anti">Escribe $F$ sin «+ C». Se compara $F'(x)$ con $f(x)$ en toda la ventana y se contrasta $F(x_{\max})-F(x_{\min})$ con la integral numérica de $f$.</p>
+          </div>
+
+          <div class="lab__chips">
+            <p class="lab__chips-titulo" id="chips-an-titulo">Probar con</p>
+            <div class="lab__chips-lista" id="chips-anti" role="group" aria-labelledby="chips-an-titulo"></div>
+          </div>
+
+          <div class="lab__cuerpo">
+            <div class="mensaje" id="mensaje-anti" role="status" aria-live="polite" hidden></div>
+            <div class="grafica" id="grafica-anti" role="img" aria-label="Gráfica de f(x), de F(x) y de F'(x)"></div>
+          </div>
+
+          <div class="lcd" id="lcd-anti"></div>
+
+          <div class="lab__pie">
+            <div class="leyenda-texto" id="resultado-anti"></div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= 3 · EJEMPLOS PASO A PASO ================= -->
+      <section class="panel-pestana" id="ejemplos" role="tabpanel" aria-labelledby="pestana-ejemplos" tabindex="0">
+        <h2 class="visualmente-oculto">Ejemplos resueltos paso a paso</h2>
+        <p class="panel__intro">Revela cada paso con «Mostrar siguiente paso». Debajo de cada ejercicio, la gráfica muestra $f$ junto a $F+C$; mueve $C$ para recorrer la familia. Cada ejercicio trae botones para comprobar la antiderivada y la identidad que se usó.</p>
+
+        <article class="hoja" aria-labelledby="ej1-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 1</span>
+            <h3 id="ej1-titulo">$\displaystyle\int\sin^3x\,dx$</h3>
+          </header>
+          <div class="hoja__enunciado"><p>Potencia impar de seno: usa la identidad pitagórica y una sustitución.</p></div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Separar un factor $\sin x$</span>
+                $$\sin^3x=\sin^2x\cdot\sin x=(1-\cos^2x)\sin x$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Sustituir $u=\cos x$, $du=-\sin x\,dx$</span>
+                $$\int(1-\cos^2x)\sin x\,dx=-\int(1-u^2)\,du$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Integrar en $u$</span>
+                $$-\left(u-\frac{u^3}{3}\right)=-u+\frac{u^3}{3}$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Regresar a $x$</span>
+                <p><span class="resultado-final">$\displaystyle\int\sin^3x\,dx=-\cos x+\frac{\cos^3x}{3}+C$</span></p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Verificar derivando</span>
+                $$\frac{d}{dx}\left(-\cos x+\frac{\cos^3x}{3}\right)=\sin x-\cos^2x\sin x=\sin x\,(1-\cos^2x)=\sin^3x\ \checkmark$$
+                <p>Con límites: $\int_0^{\pi}\sin^3x\,dx=\frac43\approx1.3333$.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="hoja__grafica" data-antiderivada='{"f":"sin(x)^3","F":"-cos(x) + cos(x)^3/3","vista":[-0.5,6.8]}'>
+            <div class="lab__n">
+              <label for="c-ej1">$C=$</label>
+              <input id="c-ej1" type="range" min="-5" max="5" step="0.5" value="0" data-c>
+              <output for="c-ej1" data-c-valor>0</output>
+            </div>
+            <div class="grafica grafica--baja" data-grafica role="img" aria-label="Gráfica de f(x) = sen³x y de su antiderivada −cos x + cos³x/3 + C"></div>
+            <p class="leyenda-texto">$F$ crece donde $\sin x&gt;0$ (de $0$ a $\pi$) y decrece de $\pi$ a $2\pi$; sus extremos están donde $f=0$.</p>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-anti='{"f":"sin(x)^3","F":"-cos(x) + cos(x)^3/3","vista":[0,6.2832]}'>Verificar la antiderivada</button>
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-identidad='{"u":"sin(x)^3","v":"sin(x)*(1 - cos(x)^2)","vista":[-6.5,6.5]}'>Verificar la identidad usada</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej2-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 2</span>
+            <h3 id="ej2-titulo">$\displaystyle\int\cos^4x\,dx$</h3>
+          </header>
+          <div class="hoja__enunciado"><p>Potencia par de coseno: reduce potencias dos veces.</p></div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Primera reducción (10.5)</span>
+                $$\cos^4x=\left(\frac{1+\cos2x}{2}\right)^2=\frac14\left(1+2\cos2x+\cos^2 2x\right)$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Segunda reducción: $\cos^22x=\frac{1+\cos4x}{2}$</span>
+                $$\cos^4x=\frac14\left(1+2\cos2x+\frac{1+\cos4x}{2}\right)=\frac38+\frac12\cos2x+\frac18\cos4x$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Integrar cada término (dividiendo entre el coeficiente del ángulo)</span>
+                $$\int\cos2x\,dx=\frac{\sin2x}{2},\qquad \int\cos4x\,dx=\frac{\sin4x}{4}$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Resultado</span>
+                <p><span class="resultado-final">$\displaystyle\int\cos^4x\,dx=\frac{3x}{8}+\frac{\sin2x}{4}+\frac{\sin4x}{32}+C$</span></p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Verificar derivando</span>
+                $$\frac{d}{dx}\left(\frac{3x}{8}+\frac{\sin2x}{4}+\frac{\sin4x}{32}\right)=\frac38+\frac{\cos2x}{2}+\frac{\cos4x}{8}=\cos^4x\ \checkmark$$
+                <p>Con límites: $\int_0^{\pi}\cos^4x\,dx=\frac{3\pi}{8}\approx1.1781$.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="hoja__grafica" data-antiderivada='{"f":"cos(x)^4","F":"3*x/8 + sin(2*x)/4 + sin(4*x)/32","vista":[-3.2,3.2]}'>
+            <div class="lab__n">
+              <label for="c-ej2">$C=$</label>
+              <input id="c-ej2" type="range" min="-5" max="5" step="0.5" value="0" data-c>
+              <output for="c-ej2" data-c-valor>0</output>
+            </div>
+            <div class="grafica grafica--baja" data-grafica role="img" aria-label="Gráfica de f(x) = cos⁴x y de su antiderivada 3x/8 + sen2x/4 + sen4x/32 + C"></div>
+            <p class="leyenda-texto">Como $\cos^4x\ge0$, $F$ nunca decrece: crece con pendiente casi nula cerca de $x=\pm\frac\pi2$, donde $f=0$.</p>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-anti='{"f":"cos(x)^4","F":"3*x/8 + sin(2*x)/4 + sin(4*x)/32","vista":[-3.2,3.2]}'>Verificar la antiderivada</button>
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-identidad='{"u":"cos(x)^4","v":"(3 + 4*cos(2*x) + cos(4*x))/8","vista":[-6.5,6.5]}'>Verificar la identidad usada</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej3-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 3</span>
+            <h3 id="ej3-titulo">$\displaystyle\int\sin3x\,\cos5x\,dx$</h3>
+          </header>
+          <div class="hoja__enunciado"><p>Ángulos distintos: convierte el producto en suma con (10.7).</p></div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Producto a suma con $A=3x$, $B=5x$</span>
+                $$\sin3x\cos5x=\tfrac12\big[\sin8x+\sin(-2x)\big]=\tfrac12\sin8x-\tfrac12\sin2x$$
+                <p>Se usó que $\sin(-2x)=-\sin2x$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Integrar cada término</span>
+                $$\int\sin8x\,dx=-\frac{\cos8x}{8},\qquad \int\sin2x\,dx=-\frac{\cos2x}{2}$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Resultado</span>
+                <p><span class="resultado-final">$\displaystyle\int\sin3x\cos5x\,dx=-\frac{\cos8x}{16}+\frac{\cos2x}{4}+C$</span></p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Verificar derivando</span>
+                $$\frac{d}{dx}\left(-\frac{\cos8x}{16}+\frac{\cos2x}{4}\right)=\frac{\sin8x}{2}-\frac{\sin2x}{2}=\sin3x\cos5x\ \checkmark$$
+                <p>Con límites: $\int_0^{\pi/4}\sin3x\cos5x\,dx=-\frac14$.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="hoja__grafica" data-antiderivada='{"f":"sin(3*x)*cos(5*x)","F":"-cos(8*x)/16 + cos(2*x)/4","vista":[0,3.2]}'>
+            <div class="lab__n">
+              <label for="c-ej3">$C=$</label>
+              <input id="c-ej3" type="range" min="-5" max="5" step="0.5" value="0" data-c>
+              <output for="c-ej3" data-c-valor>0</output>
+            </div>
+            <div class="grafica grafica--baja" data-grafica role="img" aria-label="Gráfica de f(x) = sen3x cos5x y de su antiderivada −cos8x/16 + cos2x/4 + C"></div>
+            <p class="leyenda-texto">$F$ oscila rápido (por el término de frecuencia 8) sobre una onda lenta (frecuencia 2): las dos frecuencias salen de $3+5$ y $5-3$.</p>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-anti='{"f":"sin(3*x)*cos(5*x)","F":"-cos(8*x)/16 + cos(2*x)/4","vista":[0,3.1416]}'>Verificar la antiderivada</button>
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-identidad='{"u":"sin(3*x)*cos(5*x)","v":"(sin(8*x) - sin(2*x))/2","vista":[-6.5,6.5]}'>Verificar la identidad usada</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej4-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 4</span>
+            <h3 id="ej4-titulo">$\displaystyle\int\tan^3x\,dx$</h3>
+          </header>
+          <div class="hoja__enunciado"><p>Potencia impar de tangente: separa $\tan^2x=\sec^2x-1$.</p></div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Separar y usar la identidad (10.3)</span>
+                $$\tan^3x=\tan x\,\tan^2x=\tan x\,(\sec^2x-1)=\tan x\sec^2x-\tan x$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Primer término: $u=\tan x$, $du=\sec^2x\,dx$</span>
+                $$\int\tan x\sec^2x\,dx=\int u\,du=\frac{\tan^2x}{2}$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Segundo término (módulo 9)</span>
+                $$\int\tan x\,dx=-\ln|\cos x|$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Resultado</span>
+                <p><span class="resultado-final">$\displaystyle\int\tan^3x\,dx=\frac{\tan^2x}{2}+\ln|\cos x|+C$</span></p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Verificar derivando</span>
+                $$\frac{d}{dx}\left(\frac{\tan^2x}{2}+\ln|\cos x|\right)=\tan x\sec^2x-\tan x=\tan^3x\ \checkmark$$
+                <p>Con límites: $\int_0^{\pi/4}\tan^3x\,dx=\frac12-\frac12\ln2\approx0.1534$.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="hoja__grafica" data-antiderivada='{"f":"tan(x)^3","F":"tan(x)^2/2 + log(abs(cos(x)))","vista":[-1.35,1.35]}'>
+            <div class="lab__n">
+              <label for="c-ej4">$C=$</label>
+              <input id="c-ej4" type="range" min="-5" max="5" step="0.5" value="0" data-c>
+              <output for="c-ej4" data-c-valor>0</output>
+            </div>
+            <div class="grafica grafica--baja" data-grafica role="img" aria-label="Gráfica de f(x) = tan³x y de su antiderivada tan²x/2 + ln|cos x| + C"></div>
+            <p class="leyenda-texto">$f=\tan^3x$ es impar y $F$ es par, con mínimo en $x=0$. Ambas se disparan hacia $x=\pm\frac\pi2$, donde $\cos x=0$ ($f\to\pm\infty$ y $F\to+\infty$).</p>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-anti='{"f":"tan(x)^3","F":"tan(x)^2/2 + log(abs(cos(x)))","vista":[-1.35,1.35]}'>Verificar la antiderivada</button>
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-identidad='{"u":"tan(x)^3","v":"tan(x)*(sec(x)^2 - 1)","vista":[-1.35,1.35]}'>Verificar la identidad usada</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej5-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 5</span>
+            <h3 id="ej5-titulo">$\displaystyle\int\sec^4x\,dx$</h3>
+          </header>
+          <div class="hoja__enunciado"><p>Potencia par de secante: separa $\sec^2x$ y usa $u=\tan x$.</p></div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Separar $\sec^2x$</span>
+                $$\sec^4x=\sec^2x\cdot\sec^2x=(1+\tan^2x)\sec^2x$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Sustituir $u=\tan x$, $du=\sec^2x\,dx$</span>
+                $$\int(1+u^2)\,du=u+\frac{u^3}{3}$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Resultado</span>
+                <p><span class="resultado-final">$\displaystyle\int\sec^4x\,dx=\tan x+\frac{\tan^3x}{3}+C$</span></p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Verificar derivando</span>
+                $$\frac{d}{dx}\left(\tan x+\frac{\tan^3x}{3}\right)=\sec^2x+\tan^2x\sec^2x=\sec^2x\,(1+\tan^2x)=\sec^4x\ \checkmark$$
+                <p>Con límites: $\int_0^{\pi/4}\sec^4x\,dx=1+\frac13=\frac43\approx1.3333$.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="hoja__grafica" data-antiderivada='{"f":"sec(x)^4","F":"tan(x) + tan(x)^3/3","vista":[-1.3,1.3]}'>
+            <div class="lab__n">
+              <label for="c-ej5">$C=$</label>
+              <input id="c-ej5" type="range" min="-5" max="5" step="0.5" value="0" data-c>
+              <output for="c-ej5" data-c-valor>0</output>
+            </div>
+            <div class="grafica grafica--baja" data-grafica role="img" aria-label="Gráfica de f(x) = sec⁴x y de su antiderivada tan x + tan³x/3 + C"></div>
+            <p class="leyenda-texto">$\sec^4x\ge1$, así que $F$ crece siempre y con pendiente al menos $1$; cerca de $\pm\frac\pi2$ ambas se disparan.</p>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-anti='{"f":"sec(x)^4","F":"tan(x) + tan(x)^3/3","vista":[-1.3,1.3]}'>Verificar la antiderivada</button>
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-identidad='{"u":"sec(x)^4","v":"(1 + tan(x)^2)*sec(x)^2","vista":[-1.3,1.3]}'>Verificar la identidad usada</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej6-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 6</span>
+            <h3 id="ej6-titulo">$\displaystyle\int\tan x\,\sec^3x\,dx$</h3>
+          </header>
+          <div class="hoja__enunciado"><p>Tangente con potencia impar: separa $\sec x\tan x$ y usa $u=\sec x$.</p></div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Separar $\sec x\tan x$</span>
+                $$\tan x\sec^3x=\sec^2x\cdot(\sec x\tan x)$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Sustituir $u=\sec x$, $du=\sec x\tan x\,dx$</span>
+                $$\int u^2\,du=\frac{u^3}{3}$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Resultado</span>
+                <p><span class="resultado-final">$\displaystyle\int\tan x\sec^3x\,dx=\frac{\sec^3x}{3}+C$</span></p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Verificar derivando</span>
+                $$\frac{d}{dx}\frac{\sec^3x}{3}=\sec^2x\cdot\sec x\tan x=\tan x\sec^3x\ \checkmark$$
+                <p>Con límites: $\int_0^{\pi/3}\tan x\sec^3x\,dx=\frac{8-1}{3}=\frac73\approx2.3333$.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="hoja__grafica" data-antiderivada='{"f":"tan(x)*sec(x)^3","F":"sec(x)^3/3","vista":[-1.3,1.3]}'>
+            <div class="lab__n">
+              <label for="c-ej6">$C=$</label>
+              <input id="c-ej6" type="range" min="-5" max="5" step="0.5" value="0" data-c>
+              <output for="c-ej6" data-c-valor>0</output>
+            </div>
+            <div class="grafica grafica--baja" data-grafica role="img" aria-label="Gráfica de f(x) = tan x sec³x y de su antiderivada sec³x/3 + C"></div>
+            <p class="leyenda-texto">$F=\frac{\sec^3x}{3}$ es par y tiene su mínimo $\frac13$ en $x=0$, donde $f=0$ y cambia de negativa a positiva.</p>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-anti='{"f":"tan(x)*sec(x)^3","F":"sec(x)^3/3","vista":[-1.3,1.3]}'>Verificar la antiderivada</button>
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar-identidad='{"u":"tan(x)*sec(x)^3","v":"sin(x)/cos(x)^4","vista":[-1.3,1.3]}'>Verificar la identidad usada</button>
+          </footer>
+        </article>
+      </section>
+    </div>
+
+    <nav class="prev-next" data-prev-next aria-label="Navegación entre módulos"></nav>
+  </main>
+</body>
+</html>

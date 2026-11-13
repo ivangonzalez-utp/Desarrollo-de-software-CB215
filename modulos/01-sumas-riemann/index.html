@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 01 · Sumas de Riemann · IntegraLab</title>
+  <meta name="description" content="Sumas de Riemann por la izquierda, la derecha y el punto medio: teoría, visualizador interactivo con gráfica de convergencia y ejemplos resueltos paso a paso.">
+  <script>try{var t=localStorage.getItem('ci-utp-tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-basic-dist-min@2.35.2/plotly-basic.min.js" integrity="sha384-wQ3lfCxuvLfhHGiSdHF5+e3NZ1zNwEMd8/nII+K7VKChF9llO/OwOcn/aVRkB7az" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js" integrity="sha384-d3+I7LvDambpjs3mxCGV0oIwCXzDxj2cyVHley/ulGoS2DijbpfjYixiUSl3nGuj" crossorigin="anonymous"></script>
+  <script defer src="../../assets/js/common.js"></script>
+  <script defer src="../../assets/js/numerics.js"></script>
+  <script defer src="../../assets/js/plot-helpers.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="1">
+  <noscript><p class="aviso-js">Esta plataforma necesita JavaScript para la navegación, las fórmulas y los visualizadores interactivos.</p></noscript>
+
+  <main id="contenido" class="contenedor">
+    <nav class="migas" aria-label="Ruta de navegación">
+      <ol>
+        <li><a href="../../index.html">Inicio</a></li>
+        <li><span aria-current="page">Módulo 1</span></li>
+      </ol>
+    </nav>
+
+    <header class="cabecera-lab">
+      <div>
+        <p class="cabecera-lab__num">Módulo <span>01</span></p>
+        <h1>Sumas de Riemann</h1>
+        <ul class="cabecera-lab__etiquetas" aria-label="Etiquetas del módulo">
+          <li><span class="distintivo distintivo--fase1">Fase 1 · Disponible</span></li>
+          <li><span class="etiqueta-tema">Métodos numéricos</span></li>
+        </ul>
+        <p class="lead">
+          Un área con borde curvo se puede medir por aproximaciones: se corta en franjas angostas, cada franja
+          se cambia por un rectángulo y se suman sus áreas. Entre más franjas, mejor la aproximación.
+        </p>
+      </div>
+      <aside class="pizarra" aria-label="Fórmula clave del módulo">
+        <p class="pizarra__titulo">En la pizarra</p>
+        $$\int_a^b f(x)\,dx\approx\sum_{i=1}^{n} f(x_i^*)\,\Delta x$$
+        <p class="pizarra__nota">con $\Delta x=\frac{b-a}{n}$ y $x_i^*$ un punto de cada subintervalo.</p>
+      </aside>
+    </header>
+
+    <div class="pestanas" data-pestanas>
+      <div class="pestanas__lista" role="tablist" aria-label="Secciones del módulo">
+        <button type="button" class="pestana" role="tab" id="pestana-teoria" aria-controls="teoria" aria-selected="true"><span class="pestana__num">1</span> Teoría</button>
+        <button type="button" class="pestana" role="tab" id="pestana-visualizador" aria-controls="visualizador" aria-selected="false" tabindex="-1"><span class="pestana__num">2</span> Visualizador<span class="pestana__largo">interactivo</span></button>
+        <button type="button" class="pestana" role="tab" id="pestana-ejemplos" aria-controls="ejemplos" aria-selected="false" tabindex="-1"><span class="pestana__num">3</span> Ejemplos<span class="pestana__largo">paso a paso</span></button>
+      </div>
+
+      <!-- ======================= 1 · TEORÍA ======================= -->
+      <section class="panel-pestana" id="teoria" role="tabpanel" aria-labelledby="pestana-teoria" tabindex="0">
+        <div class="teoria">
+          <h2 class="visualmente-oculto">Teoría</h2>
+
+          <h3><span class="num-sub">1.1</span> Rectángulos bajo una curva</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Notación</span>
+            <p>$\Delta x$ se lee «delta equis» y es el ancho de cada franja. El asterisco en $x_i^*$ indica un punto <em>elegido</em> dentro del subintervalo $i$.</p>
+          </aside>
+          <p>
+            Para estimar el área entre la gráfica de $y=f(x)$ y el eje $x$, desde $x=a$ hasta $x=b$, se divide
+            $[a,b]$ en $n$ subintervalos iguales. Todos miden lo mismo y sus extremos se numeran desde $x_0=a$ hasta $x_n=b$:
+          </p>
+          <div class="ecuacion"><span class="ecuacion__num">(1.1)</span>$$\Delta x=\frac{b-a}{n},\qquad x_i=a+i\,\Delta x\quad(i=0,1,\dots,n)$$</div>
+          <p>
+            En cada subintervalo $[x_{i-1},x_i]$ se dibuja un rectángulo de base $\Delta x$ cuya altura es $f(x_i^*)$.
+            Sumar las $n$ áreas produce una <strong>suma de Riemann</strong>:
+          </p>
+          <div class="ecuacion"><span class="ecuacion__num">(1.2)</span>$$S_n=\sum_{i=1}^{n} f(x_i^*)\,\Delta x$$</div>
+
+          <h3><span class="num-sub">1.2</span> Tres alturas posibles para cada rectángulo</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Cuenta los nodos</span>
+            <p>$L_n$ usa $x_0,\dots,x_{n-1}$ y $R_n$ usa $x_1,\dots,x_n$: comparten $n-1$ valores y solo difieren en un extremo.</p>
+          </aside>
+          <p>La elección del punto $x_i^*$ da nombre a la suma. Las tres más usadas son:</p>
+          <div class="definiciones">
+            <div class="definicion">
+              <p class="definicion__nombre">Por la izquierda</p>
+              <div>$$L_n=\Delta x\sum_{i=0}^{n-1} f(x_i)$$</div>
+              <p>La altura se mide en el extremo izquierdo: $x_i^*=x_{i-1}$.</p>
+            </div>
+            <div class="definicion">
+              <p class="definicion__nombre">Por la derecha</p>
+              <div>$$R_n=\Delta x\sum_{i=1}^{n} f(x_i)$$</div>
+              <p>La altura se mide en el extremo derecho: $x_i^*=x_i$.</p>
+            </div>
+            <div class="definicion">
+              <p class="definicion__nombre">En el punto medio</p>
+              <div>$$M_n=\Delta x\sum_{i=1}^{n} f(\bar{x}_i),\qquad \bar{x}_i=\tfrac{x_{i-1}+x_i}{2}$$</div>
+              <p>La altura se mide en el centro; se estudia a fondo en el <a href="../03-punto-medio/index.html">módulo 3</a>.</p>
+            </div>
+          </div>
+
+          <h3><span class="num-sub">1.3</span> El límite que define la integral</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Área con signo</span>
+            <p>Donde $f(x)&lt;0$ los rectángulos quedan bajo el eje y restan. La diferencia entre integral y área se trabaja en el <a href="../05-integral-definida-area/index.html">módulo 5</a>.</p>
+          </aside>
+          <p>
+            Si $f$ es continua en $[a,b]$, las sumas de Riemann tienden al mismo número sin importar cómo se elijan los
+            puntos $x_i^*$, siempre que las franjas se hagan cada vez más angostas. Ese número es la
+            <strong>integral definida</strong>:
+          </p>
+          <div class="ecuacion"><span class="ecuacion__num">(1.3)</span>$$\int_a^b f(x)\,dx=\lim_{n\to\infty}\sum_{i=1}^{n} f(x_i^*)\,\Delta x$$</div>
+
+          <div class="recuadro">
+            <p class="recuadro__titulo">Propiedad 1.1 · Funciones monótonas</p>
+            <ul>
+              <li>Si $f$ crece en $[a,b]$, entonces $L_n\le\int_a^b f(x)\,dx\le R_n$ (la izquierda se queda corta y la derecha se pasa).</li>
+              <li>Si $f$ decrece, las desigualdades se invierten: $R_n\le\int_a^b f(x)\,dx\le L_n$.</li>
+              <li>En ambos casos $|R_n-L_n|=|f(b)-f(a)|\,\Delta x$, de modo que el error de $L_n$ o $R_n$ no supera $|f(b)-f(a)|\,\frac{b-a}{n}$ y baja al ritmo de $\frac1n$.</li>
+            </ul>
+          </div>
+
+          <p class="siguiente-pestana"><a class="btn btn--secundario" href="#visualizador">Practicar en el visualizador →</a></p>
+        </div>
+      </section>
+
+      <!-- ================= 2 · VISUALIZADOR INTERACTIVO ================= -->
+      <section class="panel-pestana" id="visualizador" role="tabpanel" aria-labelledby="pestana-visualizador" tabindex="0">
+        <h2 class="visualmente-oculto">Visualizador interactivo</h2>
+        <p class="panel__intro">Escribe una función o toca un ejemplo, fija el intervalo y arrastra el control de $n$: los rectángulos, el visor y la tabla cambian al instante.</p>
+
+        <form class="lab" id="vis-riemann" novalidate aria-label="Visualizador de sumas de Riemann">
+          <div class="lab__barra">
+            <div class="expresion">
+              <label class="expresion__prefijo" for="fx">$f(x)=$</label>
+              <input id="fx" type="text" class="entrada-mono" data-control="funcion" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="fx-ayuda">
+            </div>
+            <div class="lab__limites">
+              <div class="expresion">
+                <label class="expresion__prefijo" for="lim-a">$a=$</label>
+                <input id="lim-a" type="text" class="entrada-mono" data-control="a" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="expresion">
+                <label class="expresion__prefijo" for="lim-b">$b=$</label>
+                <input id="lim-b" type="text" class="entrada-mono" data-control="b" autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+            <p class="lab__ayuda" id="fx-ayuda">Sintaxis de calculadora: <code>x^2</code>, <code>sqrt(x)</code>, <code>exp(x)</code>, <code>log(x)</code> (logaritmo natural, también <code>ln</code>), <code>sin(x)</code> o <code>sen(x)</code>, <code>1/x</code>. Los límites aceptan <code>pi/2</code> o <code>sqrt(2)</code>.</p>
+          </div>
+
+          <div class="lab__chips">
+            <p class="lab__chips-titulo" id="chips-titulo">Probar con</p>
+            <div class="lab__chips-lista" role="group" aria-labelledby="chips-titulo" data-control="predefinidas"></div>
+          </div>
+
+          <div class="lab__opciones">
+            <p class="lab__opciones-titulo" id="tipo-titulo">Altura del rectángulo</p>
+            <div class="segmentado" role="radiogroup" aria-labelledby="tipo-titulo">
+              <label><input type="radio" name="tipo-suma" value="left" checked><span>Izquierda $L_n$</span></label>
+              <label><input type="radio" name="tipo-suma" value="right"><span>Derecha $R_n$</span></label>
+              <label><input type="radio" name="tipo-suma" value="mid"><span>Centro $M_n$</span></label>
+            </div>
+          </div>
+
+          <div class="lab__cuerpo">
+            <div class="mensaje" data-salida="mensaje" role="status" aria-live="polite" hidden></div>
+            <div class="grafica" data-salida="grafica" role="img" aria-label="Gráfica de f(x) con los rectángulos de la suma de Riemann"></div>
+          </div>
+
+          <div class="lab__n">
+            <label for="n-rango">$n=$</label>
+            <input id="n-rango" type="range" min="1" max="100" step="1" data-control="n" aria-describedby="n-ayuda">
+            <input type="number" min="1" max="100" step="1" inputmode="numeric" data-control="n-numero" aria-label="Número de subintervalos n">
+            <p class="lab__n-ayuda" id="n-ayuda">Número de subintervalos: arrastra o escribe un entero de 1 a 100.</p>
+          </div>
+
+          <div class="lcd" data-salida="resultados"></div>
+
+          <div class="lab__pie">
+            <p class="leyenda-texto">El valor «exacto» de referencia se obtiene con la regla de Simpson usando $n=10\,000$ subintervalos.</p>
+            <details class="desplegable">
+              <summary>Tabla de valores $x_i$ y $f(x_i)$</summary>
+              <div class="desplegable__cuerpo">
+                <div class="tabla-scroll tabla-scroll--alta" data-salida="tabla"></div>
+              </div>
+            </details>
+          </div>
+        </form>
+
+        <div class="lab-extra">
+          <h3>Convergencia: la aproximación en función de $n$</h3>
+          <p>Las tres curvas muestran $L_n$, $R_n$ y $M_n$ para $n=1,\dots,100$ con la función y el intervalo de arriba. La línea discontinua es el valor exacto y el punto marca tu $n$ actual.</p>
+          <div class="grafica grafica--baja" id="grafica-convergencia" role="img" aria-label="Gráfica de convergencia de las sumas de Riemann hacia el valor exacto"></div>
+          <p class="leyenda-texto">Si $f$ es monótona, $L_n$ y $R_n$ llegan desde lados opuestos; $M_n$ se pega a la línea mucho antes.</p>
+        </div>
+      </section>
+
+      <!-- ================= 3 · EJEMPLOS PASO A PASO ================= -->
+      <section class="panel-pestana" id="ejemplos" role="tabpanel" aria-labelledby="pestana-ejemplos" tabindex="0">
+        <h2 class="visualmente-oculto">Ejemplos resueltos paso a paso</h2>
+        <p class="panel__intro">Intenta cada ejercicio en tu cuaderno y luego revela la solución paso a paso para comparar.</p>
+
+        <article class="hoja" aria-labelledby="ej1-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 1</span>
+            <h3 id="ej1-titulo">Las tres sumas para $\int_0^3 x^2\,dx$ con $n=3$</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Aproxima $\displaystyle\int_0^3 x^2\,dx$ con $L_3$, $R_3$ y $M_3$, y compara cada resultado con el valor exacto.</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Ancho y nodos</span>
+                <p>$\Delta x=\dfrac{3-0}{3}=1$, así que los nodos son $x_0=0,\ x_1=1,\ x_2=2,\ x_3=3$ y los puntos medios $0.5,\ 1.5,\ 2.5$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Evaluar la función</span>
+                <p>$f(0)=0,\ f(1)=1,\ f(2)=4,\ f(3)=9$ &nbsp;y&nbsp; $f(0.5)=0.25,\ f(1.5)=2.25,\ f(2.5)=6.25$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Suma por la izquierda (usa $x_0,x_1,x_2$)</span>
+                $$L_3=\Delta x\,[f(0)+f(1)+f(2)]=1\,(0+1+4)=5$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Suma por la derecha (usa $x_1,x_2,x_3$)</span>
+                $$R_3=\Delta x\,[f(1)+f(2)+f(3)]=1\,(1+4+9)=14$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Suma con punto medio</span>
+                $$M_3=\Delta x\,[f(0.5)+f(1.5)+f(2.5)]=1\,(0.25+2.25+6.25)=8.75$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Comparar con el valor exacto</span>
+                $$\int_0^3 x^2\,dx=\left[\frac{x^3}{3}\right]_0^3=9$$
+                <p>
+                  Errores: $|9-5|=4$ (44.4 %), $|9-14|=5$ (55.6 %) y $|9-8.75|=0.25$ (2.8 %). Como $x^2$ crece en $[0,3]$,
+                  <span class="resultado-final">$L_3=5 &lt; 9 &lt; R_3=14$</span>, y el punto medio es, por mucho, la mejor de las tres.
+                </p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar='{"f":"x^2","a":"0","b":"3","n":3,"metodo":"left"}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej2-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 2</span>
+            <h3 id="ej2-titulo">$L_4$ y $R_4$ para $\int_0^1 (x^3+1)\,dx$</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Aproxima $\displaystyle\int_0^1 (x^3+1)\,dx$ con $n=4$ usando sumas por la izquierda y por la derecha. Calcula el error de cada una.</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Ancho y nodos</span>
+                <p>$\Delta x=\dfrac{1-0}{4}=0.25$ y los nodos son $0,\ 0.25,\ 0.5,\ 0.75,\ 1$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Valores de $f(x)=x^3+1$</span>
+                <div class="tabla-scroll">
+                  <table>
+                    <thead><tr><th scope="col">$x_i$</th><th class="num" scope="col">0</th><th class="num" scope="col">0.25</th><th class="num" scope="col">0.5</th><th class="num" scope="col">0.75</th><th class="num" scope="col">1</th></tr></thead>
+                    <tbody><tr><th scope="row">$f(x_i)$</th><td class="num">1</td><td class="num">1.015625</td><td class="num">1.125</td><td class="num">1.421875</td><td class="num">2</td></tr></tbody>
+                  </table>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Suma por la izquierda</span>
+                $$L_4=0.25\,(1+1.015625+1.125+1.421875)=0.25\,(4.5625)=1.140625$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Suma por la derecha</span>
+                $$R_4=0.25\,(1.015625+1.125+1.421875+2)=0.25\,(5.5625)=1.390625$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Valor exacto y errores</span>
+                $$\int_0^1 (x^3+1)\,dx=\left[\frac{x^4}{4}+x\right]_0^1=\frac14+1=1.25$$
+                <p>Error de $L_4$: $|1.25-1.140625|=0.109375$ (8.75 %). Error de $R_4$: $|1.25-1.390625|=0.140625$ (11.25 %).</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Una pista para el módulo 2</span>
+                <p>
+                  El promedio $\tfrac{L_4+R_4}{2}=1.265625$ tiene un error de solo $0.015625$, y el punto medio da
+                  $M_4=1.2421875$ (error $0.0078125$). <span class="resultado-final">Con el mismo $n$, promediar o
+                  tomar el centro mejora mucho la aproximación.</span>
+                </p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar='{"f":"x^3 + 1","a":"0","b":"1","n":4,"metodo":"right"}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+      </section>
+    </div>
+
+    <nav class="prev-next" data-prev-next aria-label="Navegación entre módulos"></nav>
+  </main>
+</body>
+</html>
