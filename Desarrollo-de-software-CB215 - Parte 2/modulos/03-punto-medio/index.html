@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 03 · Regla del Punto Medio · IntegraLab</title>
+  <meta name="description" content="Regla del punto medio: fórmula, interpretación con la recta tangente, cota del error, comparación con el trapecio, visualizador interactivo y ejemplos paso a paso.">
+  <script>try{var t=localStorage.getItem('ci-utp-tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-basic-dist-min@2.35.2/plotly-basic.min.js" integrity="sha384-wQ3lfCxuvLfhHGiSdHF5+e3NZ1zNwEMd8/nII+K7VKChF9llO/OwOcn/aVRkB7az" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js" integrity="sha384-d3+I7LvDambpjs3mxCGV0oIwCXzDxj2cyVHley/ulGoS2DijbpfjYixiUSl3nGuj" crossorigin="anonymous"></script>
+  <script defer src="../../assets/js/common.js"></script>
+  <script defer src="../../assets/js/numerics.js"></script>
+  <script defer src="../../assets/js/plot-helpers.js"></script>
+  <script defer src="../../assets/js/visualizador.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-raiz="../../" data-modulo="3">
+  <noscript><p class="aviso-js">Esta plataforma necesita JavaScript para la navegación, las fórmulas y los visualizadores interactivos.</p></noscript>
+
+  <main id="contenido" class="contenedor">
+    <nav class="migas" aria-label="Ruta de navegación">
+      <ol>
+        <li><a href="../../index.html">Inicio</a></li>
+        <li><span aria-current="page">Módulo 3</span></li>
+      </ol>
+    </nav>
+
+    <header class="cabecera-lab">
+      <div>
+        <p class="cabecera-lab__num">Módulo <span>03</span></p>
+        <h1>Regla del Punto Medio</h1>
+        <ul class="cabecera-lab__etiquetas" aria-label="Etiquetas del módulo">
+          <li><span class="distintivo distintivo--fase1">Fase 1 · Disponible</span></li>
+          <li><span class="etiqueta-tema">Métodos numéricos</span></li>
+        </ul>
+        <p class="lead">
+          Una idea pequeña con gran efecto: medir la altura de cada rectángulo en el <strong>centro</strong> de su franja.
+          Lo que sobra de un lado se compensa con lo que falta del otro, y con las mismas evaluaciones el error
+          suele ser la mitad que el del trapecio.
+        </p>
+      </div>
+      <aside class="pizarra" aria-label="Fórmula clave del módulo">
+        <p class="pizarra__titulo">En la pizarra</p>
+        $$M_n=\Delta x\sum_{i=1}^{n} f(\bar{x}_i),\qquad \bar{x}_i=\frac{x_{i-1}+x_i}{2}$$
+        <p class="pizarra__nota">Nunca se evalúa $f$ en los extremos $a$ y $b$.</p>
+      </aside>
+    </header>
+
+    <div class="pestanas" data-pestanas>
+      <div class="pestanas__lista" role="tablist" aria-label="Secciones del módulo">
+        <button type="button" class="pestana" role="tab" id="pestana-teoria" aria-controls="teoria" aria-selected="true"><span class="pestana__num">1</span> Teoría</button>
+        <button type="button" class="pestana" role="tab" id="pestana-visualizador" aria-controls="visualizador" aria-selected="false" tabindex="-1"><span class="pestana__num">2</span> Visualizador<span class="pestana__largo">interactivo</span></button>
+        <button type="button" class="pestana" role="tab" id="pestana-ejemplos" aria-controls="ejemplos" aria-selected="false" tabindex="-1"><span class="pestana__num">3</span> Ejemplos<span class="pestana__largo">paso a paso</span></button>
+      </div>
+
+      <!-- ======================= 1 · TEORÍA ======================= -->
+      <section class="panel-pestana" id="teoria" role="tabpanel" aria-labelledby="pestana-teoria" tabindex="0">
+        <div class="teoria">
+          <h2 class="visualmente-oculto">Teoría</h2>
+
+          <h3><span class="num-sub">3.1</span> Rectángulos centrados</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Atajo</span>
+            <p>Los puntos medios también se escriben $\bar{x}_i=a+\left(i-\tfrac12\right)\Delta x$: empiezan en $a+\tfrac{\Delta x}{2}$ y avanzan de a $\Delta x$.</p>
+          </aside>
+          <p>
+            Con $\Delta x=\frac{b-a}{n}$ y los nodos $x_i=a+i\,\Delta x$, el centro del subintervalo $[x_{i-1},x_i]$ es $\bar{x}_i$.
+            La regla suma los rectángulos de base $\Delta x$ y altura $f(\bar{x}_i)$:
+          </p>
+          <div class="ecuacion"><span class="ecuacion__num">(3.1)</span>$$M_n=\Delta x\Big[f(\bar{x}_1)+f(\bar{x}_2)+\cdots+f(\bar{x}_n)\Big]$$</div>
+
+          <h3><span class="num-sub">3.2</span> La recta tangente escondida</h3>
+          <aside class="nota-margen">
+            <span class="nota-margen__titulo">Secante vs. tangente</span>
+            <p>El trapecio usa la secante entre dos puntos de la curva; el punto medio equivale a usar la tangente en el centro.</p>
+          </aside>
+          <p>
+            Si se inclina el techo del rectángulo hasta volverlo la recta tangente a la curva en $\bar{x}_i$, el área no cambia: lo que se
+            agrega a un lado del centro se quita del otro. Es decir, el rectángulo de punto medio tiene la misma área que el trapecio
+            limitado por la tangente, y la tangente se separa de la curva muy despacio cerca del punto de contacto.
+          </p>
+
+          <h3><span class="num-sub">3.3</span> Error y comparación con el trapecio</h3>
+          <p>Si $|f''(x)|\le K$ en $[a,b]$, el error $E_M=\int_a^b f(x)\,dx-M_n$ cumple</p>
+          <div class="ecuacion"><span class="ecuacion__num">(3.2)</span>$$|E_M|\le\frac{K\,(b-a)^3}{24\,n^2}$$</div>
+          <p>Es exactamente la mitad de la cota del trapecio, $\frac{K(b-a)^3}{12n^2}$.</p>
+
+          <div class="recuadro">
+            <p class="recuadro__titulo">Propiedad 3.1 · Errores de signo opuesto</p>
+            <p>Para funciones suaves y $n$ grande, $E_M\approx-\tfrac12\,E_T$. Si $f''&gt;0$, el punto medio <strong>subestima</strong> mientras el trapecio sobreestima; si $f''&lt;0$ ocurre al revés.</p>
+            <p>Combinar ambos errores para cancelarlos es la idea de la <a href="../04-regla-simpson/index.html">regla de Simpson</a>: $S_{2n}=\tfrac{T_n+2M_n}{3}$.</p>
+          </div>
+
+          <p class="siguiente-pestana"><a class="btn btn--secundario" href="#visualizador">Practicar en el visualizador →</a></p>
+        </div>
+      </section>
+
+      <!-- ================= 2 · VISUALIZADOR INTERACTIVO ================= -->
+      <section class="panel-pestana" id="visualizador" role="tabpanel" aria-labelledby="pestana-visualizador" tabindex="0">
+        <h2 class="visualmente-oculto">Visualizador interactivo</h2>
+        <p class="panel__intro">Los puntos medios $\bar{x}_i$ se marcan sobre el eje (triángulos) y sobre la curva (círculos); la altura de cada rectángulo es $f(\bar{x}_i)$.</p>
+
+        <form class="lab" id="vis-punto-medio" novalidate aria-label="Visualizador de la regla del punto medio">
+          <div class="lab__barra">
+            <div class="expresion">
+              <label class="expresion__prefijo" for="fx">$f(x)=$</label>
+              <input id="fx" type="text" class="entrada-mono" data-control="funcion" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="fx-ayuda">
+            </div>
+            <div class="lab__limites">
+              <div class="expresion">
+                <label class="expresion__prefijo" for="lim-a">$a=$</label>
+                <input id="lim-a" type="text" class="entrada-mono" data-control="a" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="expresion">
+                <label class="expresion__prefijo" for="lim-b">$b=$</label>
+                <input id="lim-b" type="text" class="entrada-mono" data-control="b" autocomplete="off" spellcheck="false">
+              </div>
+            </div>
+            <p class="lab__ayuda" id="fx-ayuda">Sintaxis de calculadora: <code>x^2</code>, <code>sqrt(x)</code>, <code>exp(x)</code>, <code>log(x)</code> (también <code>ln</code>), <code>sin(x)</code> o <code>sen(x)</code>, <code>1/x</code>. Los límites aceptan <code>pi/2</code>.</p>
+          </div>
+
+          <div class="lab__chips">
+            <p class="lab__chips-titulo" id="chips-titulo">Probar con</p>
+            <div class="lab__chips-lista" role="group" aria-labelledby="chips-titulo" data-control="predefinidas"></div>
+          </div>
+
+          <div class="lab__cuerpo">
+            <div class="mensaje" data-salida="mensaje" role="status" aria-live="polite" hidden></div>
+            <div class="grafica" data-salida="grafica" role="img" aria-label="Gráfica de f(x) con los rectángulos de punto medio y los puntos medios marcados"></div>
+          </div>
+
+          <div class="lab__n">
+            <label for="n-rango">$n=$</label>
+            <input id="n-rango" type="range" min="1" max="100" step="1" data-control="n" aria-describedby="n-ayuda">
+            <input type="number" min="1" max="100" step="1" inputmode="numeric" data-control="n-numero" aria-label="Número de subintervalos n">
+            <p class="lab__n-ayuda" id="n-ayuda">Número de subintervalos: arrastra o escribe un entero de 1 a 100.</p>
+          </div>
+
+          <div class="lcd" data-salida="resultados"></div>
+
+          <div class="lab__pie">
+            <p class="leyenda-texto" id="comparacion-trapecio"></p>
+            <p class="leyenda-texto">El valor «exacto» de referencia se obtiene con la regla de Simpson usando $n=10\,000$ subintervalos.</p>
+            <details class="desplegable">
+              <summary>Tabla de puntos medios $\bar{x}_i$ y $f(\bar{x}_i)$</summary>
+              <div class="desplegable__cuerpo">
+                <div class="tabla-scroll tabla-scroll--alta" data-salida="tabla"></div>
+              </div>
+            </details>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= 3 · EJEMPLOS PASO A PASO ================= -->
+      <section class="panel-pestana" id="ejemplos" role="tabpanel" aria-labelledby="pestana-ejemplos" tabindex="0">
+        <h2 class="visualmente-oculto">Ejemplos resueltos paso a paso</h2>
+        <p class="panel__intro">Intenta cada ejercicio en tu cuaderno y luego revela la solución paso a paso para comparar.</p>
+
+        <article class="hoja" aria-labelledby="ej1-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 1</span>
+            <h3 id="ej1-titulo">$\int_0^{\pi/2}\sin x\,dx$ con $n=4$</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Aproxima $\displaystyle\int_0^{\pi/2}\sin x\,dx$ con la regla del punto medio y $n=4$. Compara su error con el del trapecio $T_4$.</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Ancho y puntos medios</span>
+                <p>$\Delta x=\dfrac{\pi/2}{4}=\dfrac{\pi}{8}\approx0.392699$. Los puntos medios son $\tfrac{\pi}{16},\ \tfrac{3\pi}{16},\ \tfrac{5\pi}{16},\ \tfrac{7\pi}{16}$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Evaluar $\sin$ en los puntos medios</span>
+                <div class="tabla-scroll">
+                  <table>
+                    <thead><tr><th scope="col">$\bar{x}_i$</th><th class="num" scope="col">$\pi/16$</th><th class="num" scope="col">$3\pi/16$</th><th class="num" scope="col">$5\pi/16$</th><th class="num" scope="col">$7\pi/16$</th></tr></thead>
+                    <tbody><tr><th scope="row">$\sin\bar{x}_i$</th><td class="num">0.195090</td><td class="num">0.555570</td><td class="num">0.831470</td><td class="num">0.980785</td></tr></tbody>
+                  </table>
+                </div>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Aplicar la fórmula (3.1)</span>
+                $$M_4=\frac{\pi}{8}\,(0.195090+0.555570+0.831470+0.980785)=\frac{\pi}{8}\,(2.562915)\approx1.006455$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Valor exacto y error</span>
+                $$\int_0^{\pi/2}\sin x\,dx=\big[-\cos x\big]_0^{\pi/2}=0-(-1)=1$$
+                <p>$E_M=1-1.006455=-0.006455$ (0.645 %). El seno es cóncavo hacia abajo en $[0,\pi/2]$, así que el punto medio <strong>sobreestima</strong>.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Comparar con el trapecio</span>
+                <p>Con los mismos $n=4$ subintervalos, $T_4\approx0.987116$ y su error es $E_T\approx+0.012884$.</p>
+                <p><span class="resultado-final">$E_M/E_T\approx-0.501$: la mitad del error y con signo contrario.</span></p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar='{"f":"sin(x)","a":"0","b":"pi/2","n":4}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+
+        <article class="hoja" aria-labelledby="ej2-titulo">
+          <header class="hoja__cabecera">
+            <span class="hoja__num">Ejercicio 2</span>
+            <h3 id="ej2-titulo">Aproximar $\ln 2=\int_1^2 \frac{dx}{x}$ con $n=5$</h3>
+          </header>
+          <div class="hoja__enunciado">
+            <p>Usa la regla del punto medio con $n=5$ para estimar $\displaystyle\int_1^2\frac{dx}{x}$ y verifica la cota del error.</p>
+          </div>
+          <div data-pasos>
+            <ol class="pasos-lista">
+              <li class="paso">
+                <span class="paso__titulo">Ancho y puntos medios</span>
+                <p>$\Delta x=\dfrac{2-1}{5}=0.2$; los puntos medios son $1.1,\ 1.3,\ 1.5,\ 1.7,\ 1.9$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Evaluar $f(x)=1/x$</span>
+                <p>$\tfrac{1}{1.1}\approx0.909091,\ \tfrac{1}{1.3}\approx0.769231,\ \tfrac{1}{1.5}\approx0.666667,\ \tfrac{1}{1.7}\approx0.588235,\ \tfrac{1}{1.9}\approx0.526316$.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Aplicar la fórmula</span>
+                $$M_5=0.2\,(3.459540)\approx0.691908$$
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Error real</span>
+                <p>El valor exacto es $\ln 2\approx0.693147$, así que el error es $\approx0.001239$ (0.179 %). Como $1/x$ es cóncava hacia arriba, $M_5$ subestima.</p>
+              </li>
+              <li class="paso">
+                <span class="paso__titulo">Cota del error (3.2)</span>
+                <p>$f''(x)=\dfrac{2}{x^3}$ es máxima en $x=1$, así que $K=2$:</p>
+                $$|E_M|\le\frac{2\,(2-1)^3}{24\cdot 5^2}=\frac{2}{600}\approx0.003333$$
+                <p><span class="resultado-final">$0.001239\le0.003333$ ✓.</span> Con los mismos datos, $T_5\approx0.695635$ se equivoca en $0.002488$: el doble y con signo contrario.</p>
+              </li>
+            </ol>
+          </div>
+          <footer class="hoja__pie">
+            <button type="button" class="btn btn--secundario btn--pequeno" data-cargar='{"f":"1/x","a":"1","b":"2","n":5}'>Resolver en el visualizador</button>
+          </footer>
+        </article>
+      </section>
+    </div>
+
+    <nav class="prev-next" data-prev-next aria-label="Navegación entre módulos"></nav>
+  </main>
+</body>
+</html>
